@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Date;
 
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Date;
  *
  * Relationships:
  * @property Quote[] $quotes
+ * @property Episode[] $episodes
  */
 class Character extends Model
 {
@@ -46,5 +48,20 @@ class Character extends Model
     public function quotes()
     {
         return $this->hasMany(Quote::class, 'character_id', 'id');
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function episodes()
+    {
+        return $this->belongsToMany(
+                                Episode::class,
+                                'character_episode',
+                                'character_id',
+                                'episode_id',
+                                'id',
+                                'id'
+        );
     }
 }

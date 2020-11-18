@@ -13,10 +13,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @package App\Models
  *
  * @property int $character_id
+ * @property int $episode_id
  * @property string $quote
  *
  * Relationships:
  * @property Character $character
+ * @property Episode $episode
  */
 class Quote extends Model
 {
@@ -28,6 +30,7 @@ class Quote extends Model
     /** @var array */
     protected $fillable = [
         'character_id',
+        'episode_id',
         'quote',
     ];
 
@@ -40,5 +43,13 @@ class Quote extends Model
     public function character()
     {
         return $this->belongsTo(Character::class, 'character_id', 'id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function episode()
+    {
+        return $this->belongsTo(Episode::class, 'episode_id', 'id');
     }
 }
