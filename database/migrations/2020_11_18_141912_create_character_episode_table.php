@@ -21,6 +21,8 @@ class CreateCharacterEpisodeTable extends Migration
 
             $table->foreign('character_id')->references('id')->on('characters');
             $table->foreign('episode_id')->references('id')->on('episodes');
+
+            $table->unique(['character_id', 'episode_id']);
         });
     }
 
