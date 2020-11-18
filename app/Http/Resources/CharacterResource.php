@@ -28,6 +28,8 @@ class CharacterResource extends JsonResource
             'img' => $this->resource->img,
             'nickname' => $this->resource->nickname,
             'portrayed' => $this->resource->portrayed,
+            'episodes' => EpisodeResource::collection($this->whenLoaded('episodes')),
+            'quotes' => QuoteResource::collection($this->whenLoaded('quotes')),
         ];
     }
 }

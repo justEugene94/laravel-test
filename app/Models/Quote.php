@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Class Quote
  * @package App\Models
  *
+ * @property int $id
  * @property int $character_id
  * @property int $episode_id
  * @property string $quote

@@ -10,8 +10,13 @@ $router->get('/episodes', [
     'uses' => 'App\Http\Controllers\Api\EpisodesController@index',
 ]);
 
-/** Episodes */
 $router->get('/episodes/{episode_id}', [
     'as'   => 'episodes.show',
     'uses' => 'App\Http\Controllers\Api\EpisodesController@show',
+]);
+
+/** Characters */
+$router->get('/characters', [
+    'as' => 'characters.index',
+    'uses' => 'App\Http\Controllers\Api\CharactersController@index',
 ]);
