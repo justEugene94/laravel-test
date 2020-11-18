@@ -17,10 +17,12 @@ class CreateQuotesTable extends Migration
             $table->id();
 
             $table->unsignedInteger('character_id');
+            $table->unsignedInteger('episode_id');
 
             $table->mediumText('quote');
 
             $table->foreign('character_id')->references('id')->on('characters');
+            $table->foreign('episode_id')->references('id')->on('episodes');
         });
     }
 

@@ -31,6 +31,9 @@ class Quote extends Model
         'quote',
     ];
 
+    /** @var bool  */
+    public $timestamps = false;
+
     /**
      * @return BelongsTo
      */
