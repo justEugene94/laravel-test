@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Date;
 
 /**
@@ -19,13 +20,17 @@ use Illuminate\Support\Facades\Date;
  * @property string $nickname
  * @property string $portrayed
  *
+ * Relationships:
+ * @property Quote[] $quotes
  */
 class Character extends Model
 {
     use HasFactory;
 
+    /** @var string  */
     protected $table = 'characters';
 
+    /** @var array */
     protected $fillable = [
         'name',
         'birthday',
@@ -34,4 +39,12 @@ class Character extends Model
         'nickname',
         'portrayed',
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class, 'character_id', 'id');
+    }
 }
