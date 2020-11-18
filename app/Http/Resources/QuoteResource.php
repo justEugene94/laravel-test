@@ -22,7 +22,7 @@ class QuoteResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'name' => $this->resource->quote,
+            'quote' => $this->resource->quote,
             'character' => CharacterResource::make($this->whenLoaded('character')),
         ];
     }
