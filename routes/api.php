@@ -25,3 +25,9 @@ $router->get('/characters/random', [
     'as' => 'characters.random',
     'uses' => 'App\Http\Controllers\Api\CharactersController@random',
 ]);
+
+/** Quotes */
+$router->get('/quotes', [
+    'as' => 'quotes.index',
+    'uses' => 'App\Http\Controllers\Api\QuotesController@index',
+]);
