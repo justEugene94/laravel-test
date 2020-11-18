@@ -34,4 +34,16 @@ class CharactersController extends Controller
 
         return Response::make($resource);
     }
+
+    /**
+     * @return Response
+     */
+    public function random()
+    {
+        $character = Character::query()->with('quotes', 'episodes')->inRandomOrder()->firstOrFail();
+
+        $resource = CharacterResource::make($character);
+
+        return Response::make($resource);
+    }
 }

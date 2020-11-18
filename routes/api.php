@@ -20,3 +20,8 @@ $router->get('/characters', [
     'as' => 'characters.index',
     'uses' => 'App\Http\Controllers\Api\CharactersController@index',
 ]);
+
+$router->get('/characters/random', [
+    'as' => 'characters.random',
+    'uses' => 'App\Http\Controllers\Api\CharactersController@random',
+]);
