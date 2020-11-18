@@ -40,6 +40,7 @@ class CharactersController extends Controller
      */
     public function random()
     {
+        /** @var Character $character */
         $character = Character::query()->with('quotes', 'episodes')->inRandomOrder()->firstOrFail();
 
         $resource = CharacterResource::make($character);

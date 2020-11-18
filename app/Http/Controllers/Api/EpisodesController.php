@@ -16,6 +16,7 @@ class EpisodesController extends Controller
      */
     public function index()
     {
+        /** @var Episode $episodes */
         $episodes = Episode::query()->paginate(10);
 
         $resource = EpisodeResource::collection($episodes);
@@ -30,6 +31,7 @@ class EpisodesController extends Controller
      */
     public function show(int $episode_id)
     {
+        /** @var Episode $episode */
         $episode = Episode::query()->with('characters')->findOrFail($episode_id);
 
         $resource = EpisodeResource::make($episode);
