@@ -22,6 +22,7 @@ class EpisodeResource extends JsonResource
             'id' => $this->resource->id,
             'title' => $this->resource->title,
             'air_date' => $this->resource->air_date,
+            'characters' => CharacterResource::collection($this->whenLoaded('characters')),
         ];
     }
 }

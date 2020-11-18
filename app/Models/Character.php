@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Date;
  * Class Character
  * @package App\Models
  *
+ * @property int $id
  * @property string $name
  * @property Date $birthday
  * @property string $occupations

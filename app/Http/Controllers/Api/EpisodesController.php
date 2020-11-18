@@ -22,4 +22,18 @@ class EpisodesController extends Controller
 
         return Response::make($resource, 200);
     }
+
+    /**
+     * @param int $episode_id
+     *
+     * @return Response
+     */
+    public function show(int $episode_id)
+    {
+        $episode = Episode::query()->with('characters')->findOrFail($episode_id);
+
+        $resource = EpisodeResource::make($episode);
+
+        return Response::make($resource, 200);
+    }
 }

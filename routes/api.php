@@ -6,6 +6,12 @@ use Illuminate\Routing\Router;
 
 /** Episodes */
 $router->get('/episodes', [
-    'as'   => 'episodes',
+    'as'   => 'episodes.index',
     'uses' => 'App\Http\Controllers\Api\EpisodesController@index',
+]);
+
+/** Episodes */
+$router->get('/episodes/{episode_id}', [
+    'as'   => 'episodes.show',
+    'uses' => 'App\Http\Controllers\Api\EpisodesController@show',
 ]);
