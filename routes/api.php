@@ -4,35 +4,53 @@ use Illuminate\Routing\Router;
 
 /** @var  Router $router */
 
-/** Episodes */
-$router->get('/episodes', [
-    'as'   => 'episodes.index',
-    'uses' => 'App\Http\Controllers\Api\EpisodesController@index',
+/** Register */
+$router->post('/register', [
+    'as' => 'register',
+    'uses' => 'App\Http\Controllers\Api\Auth\RegisterController@register'
 ]);
 
-$router->get('/episodes/{episode_id}', [
-    'as'   => 'episodes.show',
-    'uses' => 'App\Http\Controllers\Api\EpisodesController@show',
+/** Login */
+$router->post('/login', [
+    'as' => 'login',
+    'uses' => 'App\Http\Controllers\Api\Auth\LoginController@login'
 ]);
 
-/** Characters */
-$router->get('/characters', [
-    'as' => 'characters.index',
-    'uses' => 'App\Http\Controllers\Api\CharactersController@index',
-]);
+$router->group(['middleware' => [
+    'auth:api',
+]], function (Router $router) {
 
-$router->get('/characters/random', [
-    'as' => 'characters.random',
-    'uses' => 'App\Http\Controllers\Api\CharactersController@random',
-]);
+    /** Episodes */
+    $router->get('/episodes', [
+        'as' => 'episodes.index',
+        'uses' => 'App\Http\Controllers\Api\EpisodesController@index',
+    ]);
 
-/** Quotes */
-$router->get('/quotes', [
-    'as' => 'quotes.index',
-    'uses' => 'App\Http\Controllers\Api\QuotesController@index',
-]);
+    $router->get('/episodes/{episode_id}', [
+        'as' => 'episodes.show',
+        'uses' => 'App\Http\Controllers\Api\EpisodesController@show',
+    ]);
 
-$router->get('/quotes/random', [
-    'as' => 'quotes.random',
-    'uses' => 'App\Http\Controllers\Api\QuotesController@random',
-]);
+    /** Characters */
+    $router->get('/characters', [
+        'as' => 'characters.index',
+        'uses' => 'App\Http\Controllers\Api\CharactersController@index',
+    ]);
+
+    $router->get('/characters/random', [
+        'as' => 'characters.random',
+        'uses' => 'App\Http\Controllers\Api\CharactersController@random',
+    ]);
+
+    /** Quotes */
+    $router->get('/quotes', [
+        'as' => 'quotes.index',
+        'uses' => 'App\Http\Controllers\Api\QuotesController@index',
+    ]);
+
+    $router->get('/quotes/random', [
+        'as' => 'quotes.random',
+        'uses' => 'App\Http\Controllers\Api\QuotesController@random',
+    ]);
+
+});
