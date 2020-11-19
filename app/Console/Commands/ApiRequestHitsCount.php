@@ -46,7 +46,7 @@ class ApiRequestHitsCount extends Command
         {
             foreach ($arrayOfHitsCount as $userId => $userHits)
             {
-                $count += $userHits; 
+                $count += $userHits;
             }
         }
 

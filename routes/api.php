@@ -58,4 +58,14 @@ $router->group(['middleware' => [
         'uses' => 'App\Http\Controllers\Api\QuotesController@random',
     ]);
 
+    /** States */
+    $router->get('/states', [
+        'as' => 'states',
+        'uses' => 'App\Http\Controllers\Api\StatesController@index',
+    ]);
+
+    $router->get('/my-states', [
+        'as' => 'my.states',
+        'uses' => 'App\Http\Controllers\Api\StatesController@show',
+    ]);
 });
