@@ -19,26 +19,26 @@ class ApiRequestHitListener implements ShouldQueue
      */
     public function handle(ApiRequestHit $event)
     {
-        $userKey = 'user_' . $event->user->id;
+        $userId = $event->user->id;
 
         $arrayOfHitsCount = Cache::get('api-users', []);
 
-        $count = $this->checkAndGetCountFromArray($arrayOfHitsCount, $userKey);
+        $count = $this->checkAndGetCountFromArray($arrayOfHitsCount, $userId);
 
         $count++;
 
-        $arrayOfHitsCount[$userKey] = $count;
+        $arrayOfHitsCount[$userId] = $count;
 
         Cache::put('api-users', $arrayOfHitsCount);
     }
 
     /**
      * @param array $countHits
-     * @param string $userKey
+     * @param int $userId
      *
      * @return int
      */
-    protected function checkAndGetCountFromArray(array $countHits, string $userKey): int
+    protected function checkAndGetCountFromArray(array $countHits, int $userId): int
     {
         $count = 0;
 
@@ -46,9 +46,9 @@ class ApiRequestHitListener implements ShouldQueue
         {
             $flippedArray = array_flip($countHits);
 
-            if (isset($flippedArray) && in_array($userKey, $flippedArray))
+            if (isset($flippedArray) && in_array($userId, $flippedArray))
             {
-                $count = array_search($userKey, $flippedArray);
+                $count = array_search($userId, $flippedArray);
             }
         }
 
