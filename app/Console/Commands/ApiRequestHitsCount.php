@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\RequestHitsService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
@@ -20,15 +21,21 @@ class ApiRequestHitsCount extends Command
      * @var string
      */
     protected $description = 'Count request hits';
+    /**
+     * @var RequestHitsService
+     */
+    protected $service;
 
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @param RequestHitsService $service
      */
-    public function __construct()
+    public function __construct(RequestHitsService $service)
     {
         parent::__construct();
+
+        $this->service = $service;
     }
 
     /**
@@ -38,17 +45,9 @@ class ApiRequestHitsCount extends Command
      */
     public function handle()
     {
-        $count = 0;
-
         $arrayOfHitsCount = Cache::get('api-users');
 
-        if (count($arrayOfHitsCount) != 0)
-        {
-            foreach ($arrayOfHitsCount as $userId => $userHits)
-            {
-                $count += $userHits;
-            }
-        }
+        $count = $this->service->sumAllUserHits($arrayOfHitsCount);
 
         $this->info("Count of user hits {$count}");
 

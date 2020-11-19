@@ -6,27 +6,33 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\Api\Response;
+use App\Services\RequestHitsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class StatesController extends Controller
 {
+    /** @var RequestHitsService */
+    protected $service;
+
+    /**
+     * StatesController constructor.
+     *
+     * @param RequestHitsService $service
+     */
+    public function __construct(RequestHitsService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * @return Response
      */
     public function index()
     {
-        $count = 0;
-
         $arrayOfHitsCount = Cache::get('api-users');
 
-        if (count($arrayOfHitsCount) != 0)
-        {
-            foreach ($arrayOfHitsCount as $userKey => $userHits)
-            {
-                $count += $userHits;
-            }
-        }
+        $count = $this->service->sumAllUserHits($arrayOfHitsCount);
 
         return Response::make([
             'states' => $count,
