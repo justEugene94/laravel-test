@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\Api\Response;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -15,10 +16,11 @@ class RegisterController extends Controller
 {
     /**
      * @param Request $request
+     * @param UserService $service
      *
      * @return Response
      */
-    public function register(Request $request)
+    public function register(Request $request, UserService $service)
     {
         $data = $request->all();
         $validator = $this->validator($data);
@@ -28,14 +30,9 @@ class RegisterController extends Controller
             return Response::make(null, 422)->addValidationErrors([$validator->errors()]);
         }
 
-        /** @var User $user */
-        $user = User::query()->create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $user = $service->create($data['name'],  $data['email'],  $data['password']);
 
-        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+        $token = $service->createToken($user);
 
         return Response::make(['token' => $token], 200);
     }
