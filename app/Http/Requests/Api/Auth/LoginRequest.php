@@ -4,6 +4,10 @@ namespace App\Http\Requests\Api\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property string $email
+ * @property string $password
+ */
 class LoginRequest extends FormRequest
 {
     /**
@@ -26,17 +30,6 @@ class LoginRequest extends FormRequest
         return [
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        return [
-            'email' => $this->input('email'),
-            'password' => $this->input('password'),
         ];
     }
 }

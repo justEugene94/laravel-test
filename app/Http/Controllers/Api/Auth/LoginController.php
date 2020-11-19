@@ -21,12 +21,10 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request, UserService $service)
     {
-        $data = $request->getData();
-
         /** @var User $user */
-        $user = User::query()->where('email', $data['email'])->firstOrFail();
+        $user = User::query()->where('email', $request->email)->firstOrFail();
 
-        if (!$service->checkPassword($user, $data['password']))
+        if (!$service->checkPassword($user, $request->password))
         {
             throw new BadRequestHttpException('Wrong email or password');
         }
