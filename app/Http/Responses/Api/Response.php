@@ -49,16 +49,6 @@ class Response implements Responsable
     protected $validation;
 
     /**
-     * @var mixed
-     */
-    protected $backtrace;
-
-    /**
-     * @var mixed
-     */
-    protected $eventId;
-
-    /**
      * JsonResponse constructor.
      *
      * @param null  $data
@@ -88,6 +78,59 @@ class Response implements Responsable
     }
 
 
+
+    /**
+     * @param string $text
+     * @param mixed  $code
+     *
+     * @return \App\Http\Responses\Api\Response
+     */
+    public function addErrorMessage(string $text, $code = 0): Response
+    {
+        return $this->addMessage('error', $text, $code);
+    }
+
+    /**
+     * @param string $severity
+     * @param string $text
+     * @param mixed  $code
+     * @return \App\Http\Responses\Api\Response
+     */
+    public function addMessage(string $severity, string $text, $code = 0): Response
+    {
+        $message = [
+            'severity' => $severity,
+            'text'     => $text,
+            'code'     => $code,
+        ];
+
+        $this->messages[] = $message;
+
+        return $this;
+    }
+
+    /**
+     * @param string $text
+     * @param mixed  $code
+     *
+     * @return \App\Http\Responses\Api\Response
+     */
+    public function addSuccessMessage(string $text, $code = 0): Response
+    {
+        return $this->addMessage('success', $text, $code);
+    }
+
+    /**
+     * @param null $messages
+     *
+     * @return $this
+     */
+    public function addValidationErrors($messages = null): Response
+    {
+        $this->validation[] = $messages;
+
+        return $this;
+    }
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -128,14 +171,6 @@ class Response implements Responsable
 
         if (!empty($this->validation)) {
             $data['validation'] = $this->validation;
-        }
-
-        if (!empty($this->backtrace)) {
-            $data['backtrace'] = $this->backtrace;
-        }
-
-        if (!empty($this->backtrace)) {
-            $data['eventId'] = $this->eventId;
         }
 
         $data = array_merge($data, $additional);
