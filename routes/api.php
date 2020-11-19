@@ -29,6 +29,9 @@ $router->group(['middleware' => [
     $router->get('/episodes/{episode_id}', [
         'as' => 'episodes.show',
         'uses' => 'App\Http\Controllers\Api\EpisodesController@show',
+        'where' => [
+            '{episode_id}'  => '[0-9]+',
+        ],
     ]);
 
     /** Characters */
