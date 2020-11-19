@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Http\Responses\Api\Response;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -42,7 +43,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         // TODO: Bring to the one response type
-        if ($e instanceof RouteNotFoundException) {
+        if ($e instanceof RouteNotFoundException || $e instanceof AuthorizationException) {
             return Response::make([
                 'errors' => [
                     'status' => 401,
