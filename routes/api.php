@@ -18,6 +18,7 @@ $router->post('/login', [
 
 $router->group(['middleware' => [
     'auth:api',
+    'throttle:1,20'
 ]], function (Router $router) {
 
     /** Episodes */
