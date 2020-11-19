@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Http\Responses\Api\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -33,5 +37,29 @@ class Handler extends ExceptionHandler
     public function register()
     {
         //
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof RouteNotFoundException) {
+            return Response::make([
+                'errors' => [
+                    'status' => 401,
+                    'message' => 'Unauthenticated',
+                ]
+            ], 401);
+        }
+        elseif ($e instanceof ValidationException) {
+//            dd($e->validator->errors());
+            return Response::make([
+                'errors' => [
+                    'status' => 400,
+                    'message' => $e->getMessage()
+                ],
+                'validator' => $e->validator->errors(),
+            ]);
+        }
+
+        return parent::render($request, $e);
     }
 }
