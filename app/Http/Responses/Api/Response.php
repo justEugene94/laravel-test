@@ -133,6 +133,17 @@ class Response implements Responsable
     }
 
     /**
+     * @param int $status
+     * @return \App\Http\Responses\Api\Response
+     */
+    public function setStatusCode(int $status): Response
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */

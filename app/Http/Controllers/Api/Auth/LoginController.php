@@ -27,7 +27,7 @@ class LoginController extends Controller
 
         if ($validator->fails())
         {
-            return Response::make(null, 422)->addValidationErrors([$validator->errors()]);
+            return Response::make()->setStatusCode(422)->addValidationErrors([$validator->errors()]);
         }
 
         /** @var User $user */
