@@ -22,7 +22,7 @@ class EpisodesController extends Controller
         /** @var Episode $episodes */
         $episodes = Episode::query()->paginate(10);
 
-        $this->authorize([Episode::class]);
+        $this->authorize('viewAny', [Episode::class]);
 
         $resource = EpisodeResource::collection($episodes);
 
@@ -41,7 +41,7 @@ class EpisodesController extends Controller
         /** @var Episode $episode */
         $episode = Episode::query()->with('characters')->findOrFail($episode_id);
 
-        $this->authorize($episode);
+        $this->authorize('view', $episode);
 
         $resource = EpisodeResource::make($episode);
 
