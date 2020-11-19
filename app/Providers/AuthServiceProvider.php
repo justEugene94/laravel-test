@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Character;
 use App\Models\Episode;
+use App\Models\Quote;
 use App\Policies\CharacterPolicy;
 use App\Policies\EpisodePolicy;
+use App\Policies\QuotePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
@@ -21,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Episode::class => EpisodePolicy::class,
         Character::class => CharacterPolicy::class,
+        Quote::class => QuotePolicy::class,
     ];
 
     /**
