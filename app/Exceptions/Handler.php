@@ -41,6 +41,7 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
+        // TODO: Bring to the one response type
         if ($e instanceof RouteNotFoundException) {
             return Response::make([
                 'errors' => [
@@ -50,7 +51,6 @@ class Handler extends ExceptionHandler
             ], 401);
         }
         elseif ($e instanceof ValidationException) {
-//            dd($e->validator->errors());
             return Response::make([
                 'errors' => [
                     'status' => 400,
