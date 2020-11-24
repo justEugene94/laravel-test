@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use App\Http\Responses\Api\Response;
-use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -40,27 +40,48 @@ class Handler extends ExceptionHandler
         //
     }
 
-    public function render($request, Throwable $e)
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param Throwable $exception
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
+     * @throws Throwable
+     */
+    public function render($request, Throwable $exception)
     {
-        // TODO: Bring to the one response type
-        if ($e instanceof RouteNotFoundException || $e instanceof AuthorizationException) {
-            return Response::make([
-                'errors' => [
-                    'status' => 401,
-                    'message' => 'Unauthenticated',
-                ]
-            ]);
+        if ($exception instanceof RouteNotFoundException || $exception instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $exception);
         }
-        elseif ($e instanceof ValidationException) {
-            return Response::make([
-                'errors' => [
-                    'status' => 400,
-                    'message' => $e->getMessage()
-                ],
-                'validator' => $e->validator->errors(),
-            ]);
+        elseif ($exception instanceof ValidationException) {
+            return $this->validationExceptionToResponse($exception, $request);
         }
 
         return parent::render($request, $e);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param AuthenticationException $exception
+     * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return Response::make()->addErrorMessage($exception->getMessage(), 401)
+            ->setStatusCode(401)
+            ->toResponse($request);
+    }
+
+    /**
+     * Create a response object from the given validation exception.
+     *
+     * @param  \Illuminate\Validation\ValidationException  $exception
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function validationExceptionToResponse(ValidationException $exception, $request)
+    {
+        return Response::make()->addErrorMessage($exception->getMessage(), 422)
+            ->setValidation($exception->errors())
+            ->setStatusCode(422)
+            ->toResponse($request);
     }
 }

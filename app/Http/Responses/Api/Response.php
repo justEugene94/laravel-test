@@ -121,13 +121,13 @@ class Response implements Responsable
     }
 
     /**
-     * @param null $messages
+     * @param array $fields
      *
      * @return $this
      */
-    public function addValidationErrors($messages = null): Response
+    public function setValidation(array $fields): Response
     {
-        $this->validation[] = $messages;
+        $this->validation[] = $fields;
 
         return $this;
     }
